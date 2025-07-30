@@ -100,7 +100,6 @@ int main(void)
 {  
 
     int opcao;
-    bool sair = false;
     do
     {
         system("cls");
@@ -122,11 +121,11 @@ int main(void)
         {
             case 1: cadastro(); break;
             case 2: exibir(); break;
-            case 3: sair = true; break;
+            case 3: cout << "Programa Encerrado!"; break;
 
             default: cout << "Opcao invalida!" << endl;
         }
-    } while (!sair);
+    } while (opcao != 5);
     
     return 0;
 }
