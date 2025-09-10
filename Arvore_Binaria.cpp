@@ -1,30 +1,36 @@
 #include <iostream>
 using namespace std;
 
+// ============================================
+//      Estrutura do Nó da Árvore Binária
+// ============================================
 struct No
 {
-    int chave;
-    No* dir;
-    No* esq;
+    int chave;   // valor armazenado no nó
+    No* dir;     // ponteiro para filho à direita
+    No* esq;     // ponteiro para filho à esquerda
 };
 
-// ========================
-// Fila manual
-// ========================
-const int MAX = 100; // tamanho máximo da fila
-No* fila[MAX];
-int ini = 0, fim = 0;
+// ============================================
+//      Implementação de Fila Manual
+// ============================================
+const int MAX = 100;             // tamanho máximo da fila
+No* fila[MAX];                   // vetor que representa a fila
+int ini = 0, fim = 0;            // índices de controle da fila
 
+// Verifica se a fila está vazia
 bool FilaVazia()
 {
     return ini == fim;
 }
 
+// Verifica se a fila está cheia
 bool FilaCheia()
 {
     return (fim + 1) % MAX == ini;
 }
 
+// Insere um nó no final da fila
 void Enfileirar(No* n)
 {
     if (!FilaCheia())
@@ -34,6 +40,7 @@ void Enfileirar(No* n)
     }
 }
 
+// Remove um nó do início da fila
 No* Desenfileirar()
 {
     if (!FilaVazia())
@@ -45,36 +52,40 @@ No* Desenfileirar()
     return nullptr;
 }
 
-// ========================
-// Árvore Binária
-// ========================
+// ============================================
+//      Funções da Árvore Binária
+// ============================================
+
+// Insere um novo nó na árvore
 void Inserir(int chave, No*& raiz)
 {
-    if (raiz == nullptr)
+    if (raiz == nullptr)                 // insere novo nó
     {
         raiz = new No;
         raiz->chave = chave;
         raiz->dir = nullptr;
         raiz->esq = nullptr;
     }
-    else if (chave < raiz->chave)
+    else if (chave < raiz->chave)        // vai para a esquerda
         Inserir(chave, raiz->esq);
-    else
+    else                                 // vai para a direita
         Inserir(chave, raiz->dir);
 }
 
+// Busca um valor na árvore
 bool Busca(int pesq, No* raiz)
 {
     if (raiz == nullptr)
         return false;
-    else if (pesq == raiz->chave)
+    else if (pesq == raiz->chave)           // achou
         return true;
-    else if (pesq < raiz->chave)
+    else if (pesq < raiz->chave)            // procura na esquerda
         return Busca(pesq, raiz->esq);
-    else
+    else                                    // procura na direita
         return Busca(pesq, raiz->dir);
 }
 
+// Conta a quantidade de nós
 int Contagem(No* raiz)
 {
     if (raiz == nullptr)
@@ -83,6 +94,7 @@ int Contagem(No* raiz)
         return Contagem(raiz->esq) + 1 + Contagem(raiz->dir);
 }
 
+// Percorre a árvore em ordem (Esquerda, Raiz, Direita)
 void EmOrdem(No* raiz)
 {
     if (raiz != nullptr)
@@ -93,6 +105,7 @@ void EmOrdem(No* raiz)
     }
 }
 
+// Percorre a árvore em pré-ordem (Raiz, Esquerda, Direita)
 void PreOrdem(No* raiz)
 {
     if (raiz != nullptr)
@@ -103,6 +116,7 @@ void PreOrdem(No* raiz)
     }
 }
 
+// Percorre a árvore em pós-ordem (Esquerda, Direita, Raiz)
 void PosOrdem(No* raiz)
 {
     if (raiz != nullptr)
@@ -113,6 +127,7 @@ void PosOrdem(No* raiz)
     }
 }
 
+// Percorre a árvore em largura (nível por nível)
 void Largura(No* raiz)
 {
     if (raiz == nullptr) return;
@@ -133,6 +148,7 @@ void Largura(No* raiz)
     }
 }
 
+// Remove um nó da árvore (recursivo)
 void Remover(No*& raiz, int chave)
 {
     if(raiz == nullptr)
@@ -145,19 +161,19 @@ void Remover(No*& raiz, int chave)
     else if (chave > raiz->chave)
         Remover(raiz->dir, chave);
     else
-        if(raiz->dir == nullptr && raiz->esq == nullptr)
+        if(raiz->dir == nullptr && raiz->esq == nullptr)     // caso 1: nó folha
         {
             delete raiz;
         }
-    else if (raiz->esq == nullptr)
+    else if (raiz->esq == nullptr)                           // caso 2: só tem filho direito
         {
             raiz = raiz->dir;
         }
-    else if (raiz->dir == nullptr)
+    else if (raiz->dir == nullptr)                           // caso 2: só tem filho esquerdo
         {
             raiz = raiz->esq;
         }
-    else
+    else                                                     // caso 3: dois filhos → substitui pelo sucessor
     {
         No* sucessor = raiz->dir;
         while(sucessor->esq != nullptr)
@@ -166,18 +182,16 @@ void Remover(No*& raiz, int chave)
         }
         raiz->chave = sucessor->chave;
         Remover(raiz->dir, sucessor->chave);
-
-
     }
 }
 
+// Remove um nó da árvore (iterativo)
 void RemoverIterativo(No*& raiz, int chave)
 {
-
     No* atual = raiz;
     No* pai = nullptr;
 
-    while(atual != nullptr && atual->chave != chave)
+    while(atual != nullptr && atual->chave != chave)         // procura o nó
     {
         pai = atual;
         if(chave < atual->chave)
@@ -192,8 +206,7 @@ void RemoverIterativo(No*& raiz, int chave)
         return;
     }
 
-
-    if(atual->esq == nullptr && atual->dir == nullptr)
+    if(atual->esq == nullptr && atual->dir == nullptr)        // caso 1: nó folha
     {
         if(pai == nullptr)
             raiz = nullptr;
@@ -204,7 +217,8 @@ void RemoverIterativo(No*& raiz, int chave)
 
         delete atual;
     }
-    else if(atual->esq == nullptr || atual->dir == nullptr)
+
+    else if(atual->esq == nullptr || atual->dir == nullptr)    // caso 2: nó com um filho
     {
         No* filho = (atual->esq != nullptr) ? atual->esq : atual->dir;
 
@@ -217,9 +231,7 @@ void RemoverIterativo(No*& raiz, int chave)
 
         delete atual;
     }
-  
-    else {
-      
+    else {                                                    // caso 3: nó com dois filhos
         No* sucessorPai = atual;
         No* sucessor = atual->dir;
 
@@ -237,23 +249,24 @@ void RemoverIterativo(No*& raiz, int chave)
 
         delete sucessor;
     }
-    delete raiz;
 }
 
-// ========================
-// Programa principal
-// ========================
+// ============================================
+//             Programa principal
+// ============================================
 int main()
 {
     No* raiz = nullptr;
     int pesq;
 
+    // inserção de valores
     Inserir(4, raiz);
     Inserir(3, raiz);
     Inserir(5, raiz);
     Inserir(2, raiz);
     Inserir(7, raiz);
 
+    // busca interativa
     cout << "Digite um numero para buscar: ";
     cin >> pesq;
 
@@ -262,8 +275,10 @@ int main()
     else
         cout << "Nao Encontrou" << endl;
 
+    // estatísticas
     cout << "Total de nos: " << Contagem(raiz) << endl;
 
+    // percursos
     cout << "Em Ordem: ";
     EmOrdem(raiz);
     cout << endl;
@@ -282,4 +297,3 @@ int main()
 
     return 0;
 }
-
