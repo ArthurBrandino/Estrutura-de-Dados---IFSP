@@ -54,23 +54,52 @@ void selectionSort(int vetor[], int tamanho)
     }
 }
 
-/*void insertionSort(int vetor[], int tamanho)
+void insertionSort(int vetor[], int tamanho)
 {
+    int cont, atual;
     for(int i = 1; i < tamanho; i++)
     {
-        int cont = i -1;
-        while (cont >= 0 )
+        atual = vetor[i];
+        cont = i - 1;
+        while (cont >= 0 && vetor[cont] > atual)
         {
-            if(vetor[cont] > vetor[i])
-            {
-                vetor[cont + 1] = vetor[cont];
-            }
-
+            vetor[cont + 1] = vetor[cont];
             cont--;
         }
-        
+        vetor[cont + 1] = atual;
     }
-}*/
+}
+
+void countingSort(int vetor[], int tamanho)
+{
+    int maior = vetor[0];
+
+    for (int i = 1; i < tamanho; i++)
+        if(vetor[i] >= maior) maior = vetor[i];
+    
+    int contagem[maior + 1];
+
+    for (int i = 0; i <= maior; i++)
+        contagem[i] = 0;
+    
+    for (int i = 0; i < tamanho; i++)
+        contagem[vetor[i]]++;
+    
+    for(int i = 1; i  <= maior; i++)
+        contagem[i] = contagem[i] + contagem[i-1];
+
+    int vetorSaida[tamanho];
+
+    for (int i = tamanho -1; i >= 0; i--)
+    {
+        vetorSaida[contagem[vetor[i]]-1] = vetor[i];
+        contagem[vetor[i]]--;
+    }
+    
+    for (int i = 0; i < tamanho; i++)
+        vetor[i] = vetorSaida[i];
+    
+}
 
 int main()
 {
