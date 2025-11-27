@@ -12,6 +12,8 @@ void mostrarVetor(int vetor[], int tamanho){
     cout << endl;
 }
 
+
+//Compara elementos adjacentes, Troca se estiverem na ordem errada, Repete até que não haja mais trocas
 void bubbleSort(int vetor[], int tamanho)
 {
     bool trocou;
@@ -34,6 +36,19 @@ void bubbleSort(int vetor[], int tamanho)
     }
 }
 
+/*
+    1. Divide o array em duas partes: ordenada (inicialmente vazia) e
+    não ordenada.
+    
+    2. Encontra o menor elemento na parte não ordenada.
+    
+    3. Troca esse elemento com o primeiro elemento da parte não
+    ordenada.
+    
+    4. Expande a parte ordenada para incluir esse elemento.
+    
+    5. Repete até que toda a lista esteja ordenada.
+*/
 void selectionSort(int vetor[], int tamanho)
 {
     for(int i = 0; i < tamanho - 1; i++)
@@ -54,6 +69,20 @@ void selectionSort(int vetor[], int tamanho)
     }
 }
 
+
+/*
+    1. Divide o array em duas partes: ordenada (inicialmente apenas o
+    primeiro elemento) e não ordenada.
+    
+    2. PeĀa o primeiro elemento da parte não ordenada.
+    
+    3. Insere este elemento na posição correta dentro da parte
+    ordenada.
+    
+    4. Expande a parte ordenada para incluir esse elemento.
+    
+    5. Repete até que toda a lista esteja ordenada.
+*/
 void insertionSort(int vetor[], int tamanho)
 {
     int cont, atual;
